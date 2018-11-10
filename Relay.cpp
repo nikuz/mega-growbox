@@ -13,10 +13,13 @@ static RelayItem relays[] = {
         RelayItem(35, "free"), // 220V
         RelayItem(36, "s1", false), // 12V
         RelayItem(37, "s2", false), // 12V
-        RelayItem(38, "s", false), // 12V
+        RelayItem(38, "s3", false), // 12V
         RelayItem(39, "s4", false), // 12V
         RelayItem(40, "sHumidity", false) // 12V
 };
+
+const char relayOnSerialCommand[] = "rOn";
+const char relayOffSerialCommand[] = "rOf";
 
 Relay::Relay() {}
 
@@ -42,14 +45,14 @@ void Relay::initiate() {
     }
 }
 
-void Relay::parseSerialCommand(const char *command, const char *param) {
-    if (strcmp(command, "rOn") == 0) return Relay::on(param);
-    if (strcmp(command, "rOf") == 0) return Relay::off(param);
+bool Relay::parseSerialCommand(const char *command, const char *param) {
+    if (strcmp(command, relayOnSerialCommand) == 0) return Relay::on(param);
+    if (strcmp(command, relayOffSerialCommand) == 0) return Relay::off(param);
 }
 
 // private
 
-void Relay::on(const char *name) {
+bool Relay::on(const char *name) {
     RelayItem relayItem = Relay::getRelayPin(name);
     if (relayItem.pin != -1) {
         Serial.print("Relay ON: ");
@@ -59,13 +62,15 @@ void Relay::on(const char *name) {
         } else {
             digitalWrite(relayItem.pin, LOW);
         }
-    } else {
-        Serial.print("Relay doesn't exist: ");
-        Serial.println(name);
+        return true;
     }
+
+    Serial.print("Relay doesn't exist: ");
+    Serial.println(name);
+    return false;
 }
 
-void Relay::off(const char *name) {
+bool Relay::off(const char *name) {
     RelayItem relayItem = Relay::getRelayPin(name);
     if (relayItem.pin != -1) {
         Serial.print("Relay OFF: ");
@@ -75,10 +80,13 @@ void Relay::off(const char *name) {
         } else {
             digitalWrite(relayItem.pin, HIGH);
         }
-    } else {
-        Serial.print("Relay doesn't exist: ");
-        Serial.println(name);
+
+        return true;
     }
+
+    Serial.print("Relay doesn't exist: ");
+    Serial.println(name);
+    return false;
 }
 
 RelayItem Relay::getRelayPin(const char *name) {

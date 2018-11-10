@@ -33,23 +33,23 @@ void Sensor::readDHT() {
 // temperature
 
 float Sensor::temperatureGet() {
-    Serial.print("DHT temperature: ");
-    Serial.println(currentTemperature);
+//    Serial.print("DHT temperature: ");
+//    Serial.println(currentTemperature);
     return currentTemperature;
 }
 
 // humidity
 
 float Sensor::humidityGet() {
-    Serial.print("DHT humidity: ");
-    Serial.println(currentHumidity);
+//    Serial.print("DHT humidity: ");
+//    Serial.println(currentHumidity);
     return currentHumidity;
 }
 
 bool Sensor::humidityHasWater() {
     int hasWater = digitalRead(HUMIDITY_LEVEL_SENSOR);
-    Serial.print("Humidity has water: ");
-    Serial.println(hasWater ? "True" : "False");
+//    Serial.print("Humidity has water: ");
+//    Serial.println(hasWater ? "True" : "False");
     return hasWater ? true : false;
 }
 

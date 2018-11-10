@@ -20,12 +20,12 @@ public:
 
     static void initiate();
 
-    static void parseSerialCommand(const char *command, const char *param);
+    static bool parseSerialCommand(const char *command, const char *param);
 
 private:
-    static void on(const char *name);
+    static bool on(const char *name);
 
-    static void off(const char *name);
+    static bool off(const char *name);
 
     static RelayItem getRelayPin(const char *name);
 };

@@ -4,8 +4,6 @@
 
 static char command[5];
 static char param[15];
-static char delimiter = ':';
-static char endMarker = '\n';
 static char chunk;
 static byte i = 0;
 static boolean delimiterPassed = false;
@@ -28,18 +26,18 @@ SerialFrame AppSerial::getFrame() {
     while (Serial1.available() > 0 && gotCommand == false) {
         delay(1);
         chunk = Serial1.read();
-        if (chunk != delimiter && chunk != endMarker) {
+        if (chunk != frameDelimiter && chunk != frameEndMarker) {
             if (delimiterPassed) {
                 param[i] = chunk;
             } else {
                 command[i] = chunk;
             }
             i++;
-        } else if (chunk == delimiter) {
+        } else if (chunk == frameDelimiter) {
             command[i] = '\0'; // terminate the command
             i = 0;
             delimiterPassed = true;
-        } else if (chunk == endMarker) {
+        } else if (chunk == frameEndMarker) {
             if (delimiterPassed) {
                 param[i] = '\0'; // terminate the param
             }
@@ -50,11 +48,19 @@ SerialFrame AppSerial::getFrame() {
 
     if (gotCommand) {
         Serial.print(command);
-        Serial.print(delimiter);
+        Serial.print(frameDelimiter);
         Serial.println(param);
 
         return SerialFrame(command, param);
     }
 
     return SerialFrame("", "");
+}
+
+void AppSerial::sendFrame(SerialFrame serialFrame) {
+    Serial1.write(serialFrame.command);
+    Serial1.write(serialFrame.delimiter);
+    Serial1.write(serialFrame.param);
+    Serial1.write(serialFrame.endMarker);
+//    Serial1.flush();
 }

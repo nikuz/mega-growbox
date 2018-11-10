@@ -4,7 +4,7 @@
 #include "Sensor.h"
 #include "Tools.h"
 
-int DHTPReadInterval = 1;  // read sensor once in one second
+int DHTPReadInterval = 2;  // read sensor once in two seconds
 unsigned long DHTPReadLastTime = millis();
 
 void setup() {
@@ -23,10 +23,12 @@ void setup() {
 }
 
 void loop() {
-
     SerialFrame serialFrame = AppSerial::getFrame();
     if (strcmp(serialFrame.command, "") != 0) {
-        Relay::parseSerialCommand(serialFrame.command, serialFrame.param);
+        bool performRelayCommand = Relay::parseSerialCommand(serialFrame.command, serialFrame.param);
+        if (performRelayCommand) {
+            AppSerial::sendFrame(serialFrame);
+        }
     }
 
     // Timers
