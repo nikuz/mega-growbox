@@ -1,13 +1,11 @@
-#import "Relay.h"
+#include "Relay.h"
+#include "AppSerial.h"
+#include "AppTime.h"
+#include "Sensor.h"
+#include "Tools.h"
 
-static char command[5];
-static char param[15];
-static char delimiter = ':';
-static char endMarker = '\n';
-static char chunk;
-static byte i = 0;
-static boolean delimiterPassed = false;
-static boolean gotCommand = false;
+int DHTPReadInterval = 1;  // read sensor once in one second
+unsigned long DHTPReadLastTime = millis();
 
 void setup() {
     Serial.begin(115200);
@@ -20,43 +18,22 @@ void setup() {
     }
 
     Relay::initiate();
+    AppTime::RTCBegin();
+    AppTime::RTCGetCurrentTime();
 }
 
 void loop() {
-    delimiterPassed = false;
-    gotCommand = false;
-    i = 0;
 
-    while (Serial1.available() > 0 && gotCommand == false) {
-        delay(1);
-        chunk = Serial1.read();
-        if (chunk != delimiter && chunk != endMarker) {
-            if (delimiterPassed) {
-                param[i] = chunk;
-            } else {
-                command[i] = chunk;
-            }
-            i++;
-        } else if (chunk == delimiter) {
-            command[i] = '\0'; // terminate the command
-            i = 0;
-            delimiterPassed = true;
-        } else if (chunk == endMarker) {
-            if (delimiterPassed) {
-                param[i] = '\0'; // terminate the param
-            }
-            gotCommand = true;
-            i = 0;
-        }
+    SerialFrame serialFrame = AppSerial::getFrame();
+    if (strcmp(serialFrame.command, "") != 0) {
+        Relay::parseSerialCommand(serialFrame.command, serialFrame.param);
     }
-    if (gotCommand) {
-        Relay::parseSerialCommand(command, param);
 
-        Serial.print(command);
-        Serial.print(delimiter);
-        Serial.println(param);
-
-        memset(command, 0, sizeof(command));
-        memset(param, 0, sizeof(param));
+    // Timers
+    if (Tools::timerCheck(DHTPReadInterval, DHTPReadLastTime)) {
+        Sensor::readDHT();
+        Sensor::temperatureGet();
+        Sensor::humidityGet();
+        DHTPReadLastTime = millis();
     }
 }
