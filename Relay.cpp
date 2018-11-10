@@ -67,9 +67,9 @@ void Relay::on(const char *name) {
 
 void Relay::off(const char *name) {
     RelayItem relayItem = Relay::getRelayPin(name);
-    if (relayItem.name) {
+    if (relayItem.pin != -1) {
         Serial.print("Relay OFF: ");
-        Serial.println(name);
+        Serial.println(relayItem.name);
         if (relayItem.highLevelTrigger) {
             digitalWrite(relayItem.pin, LOW);
         } else {
