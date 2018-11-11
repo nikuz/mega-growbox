@@ -11,13 +11,13 @@ public:
 
     static void RTCBegin();
 
-    static int RTCGetTemperature();
+    static void RTCGetTemperature(char *temperatureStr);
 
     static bool RTCBattery();
 
     static bool RTCIsDateTimeValid();
 
-    static String RTCGetCurrentTime();
+    static void RTCGetCurrentTime(char *timeStr);
 
     static void RTCDateTimeUpdate(const char *date, const char *time);
 };

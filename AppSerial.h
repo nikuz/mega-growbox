@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-const static char frameDelimiter = ':';
+const static char frameDelimiter = '|';
 const static char frameEndMarker = '\n';
 
 struct SerialFrame {
@@ -11,8 +11,6 @@ struct SerialFrame {
     const char *param;
     const char delimiter;
     const char endMarker;
-
-    SerialFrame() {}
 
     SerialFrame(
             const char *_command,
@@ -33,7 +31,7 @@ public:
 
     static SerialFrame getFrame();
 
-    static void sendFrame(SerialFrame serialFrame);
+    static void sendFrame(SerialFrame *serialFrame);
 };
 
 #endif /* AppSerial_h */

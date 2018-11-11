@@ -4,6 +4,9 @@
 #include "Sensor.h"
 #include "Tools.h"
 
+int TimeReadInterval = 1;  // read sensor once in two seconds
+unsigned long TimeReadLastTime = millis();
+
 int DHTPReadInterval = 2;  // read sensor once in two seconds
 unsigned long DHTPReadLastTime = millis();
 
@@ -19,7 +22,6 @@ void setup() {
 
     Relay::initiate();
     AppTime::RTCBegin();
-    AppTime::RTCGetCurrentTime();
 }
 
 void loop() {
@@ -27,15 +29,39 @@ void loop() {
     if (strcmp(serialFrame.command, "") != 0) {
         bool performRelayCommand = Relay::parseSerialCommand(serialFrame.command, serialFrame.param);
         if (performRelayCommand) {
-            AppSerial::sendFrame(serialFrame);
+            AppSerial::sendFrame(&serialFrame);
         }
     }
 
-    // Timers
+    // RTC time and temperature
+    if (Tools::timerCheck(TimeReadInterval, TimeReadLastTime)) {
+        const char timeStr[20];
+        AppTime::RTCGetCurrentTime(timeStr);
+        SerialFrame timeFrame = SerialFrame("time", timeStr);
+        AppSerial::sendFrame(&timeFrame);
+
+        const char timeTempStr[2];
+        AppTime::RTCGetTemperature(timeTempStr);
+        SerialFrame timeTemperatureFrame = SerialFrame("ttemp", timeTempStr);
+        AppSerial::sendFrame(&timeTemperatureFrame);
+
+        TimeReadLastTime = millis();
+    }
+    // DHT temperature and humidity
     if (Tools::timerCheck(DHTPReadInterval, DHTPReadLastTime)) {
         Sensor::readDHT();
-        Sensor::temperatureGet();
-        Sensor::humidityGet();
+
+        const char tempStr[2];
+        Sensor::temperatureGet(tempStr);
+        SerialFrame temperatureFrame = SerialFrame("temp", tempStr);
+        AppSerial::sendFrame(&temperatureFrame);
+
+        const char humStr[2];
+        Sensor::humidityGet(humStr);
+        SerialFrame humidityFrame = SerialFrame("hum", humStr);
+        AppSerial::sendFrame(&humidityFrame);
+
         DHTPReadLastTime = millis();
     }
+    //
 }

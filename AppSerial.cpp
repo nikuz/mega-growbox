@@ -2,8 +2,8 @@
 
 #include "AppSerial.h"
 
-static char command[5];
-static char param[15];
+static char command[10];
+static char param[20];
 static char chunk;
 static byte i = 0;
 static boolean delimiterPassed = false;
@@ -57,10 +57,10 @@ SerialFrame AppSerial::getFrame() {
     return SerialFrame("", "");
 }
 
-void AppSerial::sendFrame(SerialFrame serialFrame) {
-    Serial1.write(serialFrame.command);
-    Serial1.write(serialFrame.delimiter);
-    Serial1.write(serialFrame.param);
-    Serial1.write(serialFrame.endMarker);
-//    Serial1.flush();
+void AppSerial::sendFrame(SerialFrame *serialFrame) {
+    Serial1.write(serialFrame->command);
+    Serial1.write(serialFrame->delimiter);
+    Serial1.write(serialFrame->param);
+    Serial1.write(serialFrame->endMarker);
+    Serial1.flush();
 }

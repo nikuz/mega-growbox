@@ -32,24 +32,26 @@ void Sensor::readDHT() {
 
 // temperature
 
-float Sensor::temperatureGet() {
-//    Serial.print("DHT temperature: ");
-//    Serial.println(currentTemperature);
-    return currentTemperature;
+void Sensor::temperatureGet(char* temperatureStr) {
+    dtostrf(currentTemperature, sizeof temperatureStr, 0, temperatureStr);
+
+    Serial.print("DHT temperature: ");
+    Serial.println(temperatureStr);
 }
 
 // humidity
 
-float Sensor::humidityGet() {
-//    Serial.print("DHT humidity: ");
-//    Serial.println(currentHumidity);
-    return currentHumidity;
+void Sensor::humidityGet(char* humidityStr) {
+    dtostrf(currentHumidity, sizeof humidityStr, 0, humidityStr);
+
+    Serial.print("DHT humidity: ");
+    Serial.println(humidityStr);
 }
 
 bool Sensor::humidityHasWater() {
     int hasWater = digitalRead(HUMIDITY_LEVEL_SENSOR);
-//    Serial.print("Humidity has water: ");
-//    Serial.println(hasWater ? "True" : "False");
+    Serial.print("Humidity has water: ");
+    Serial.println(hasWater ? "True" : "False");
     return hasWater ? true : false;
 }
 

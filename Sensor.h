@@ -13,9 +13,9 @@ public:
 
     static void readDHT();
 
-    static float temperatureGet();
+    static void temperatureGet(char *temperatureStr);
 
-    static float humidityGet();
+    static void humidityGet(char *humidityStr);
 
     static bool humidityHasWater();
 
