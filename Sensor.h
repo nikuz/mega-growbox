@@ -13,15 +13,15 @@ public:
 
     static void readDHT();
 
-    static void temperatureGet(char *temperatureStr);
+    static char *temperatureGet();
 
-    static void humidityGet(char *humidityStr);
+    static char *humidityGet();
 
-    static bool humidityHasWater();
+    static char *humidityHasWater();
 
-    static unsigned int getSoilMoisture(int sensorId, int min, int max);
+    static char *getSoilMoisture(int sensorId);
 
-    static bool wateringHasWater();
+    static char *wateringHasWater();
 };
 
 #endif /* Sensor_h */

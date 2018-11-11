@@ -23,3 +23,5 @@
 #define SOIL_SENSOR_2 1 // A1
 #define SOIL_SENSOR_3 2 // A2
 #define SOIL_SENSOR_4 3 // A3
+
+// relays defined in Relay.cpp

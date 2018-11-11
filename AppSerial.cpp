@@ -58,6 +58,7 @@ SerialFrame AppSerial::getFrame() {
 }
 
 void AppSerial::sendFrame(SerialFrame *serialFrame) {
+    delay(1);
     Serial1.write(serialFrame->command);
     Serial1.write(serialFrame->delimiter);
     Serial1.write(serialFrame->param);

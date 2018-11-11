@@ -38,19 +38,27 @@ void AppTime::RTCBegin() {
     Rtc.SetSquareWavePin(DS3231SquareWavePin_ModeNone);
 }
 
-void AppTime::RTCGetTemperature(char* temperatureStr) {
+char *AppTime::RTCGetTemperature() {
     RtcTemperature rtcTemp = Rtc.GetTemperature();
-    dtostrf(rtcTemp.AsFloatDegC(), sizeof temperatureStr, 0, temperatureStr);
+    static char temperatureStr[2];
+    float rtcTempFloat = rtcTemp.AsFloatDegC();
+    int strLength = 1;
+    if (rtcTempFloat > 10) {
+        strLength = 2;
+    }
+    dtostrf(rtcTempFloat, strLength, 0, temperatureStr);
 
     Serial.print("RTC temperature: ");
     Serial.println(temperatureStr);
+
+    return temperatureStr;
 }
 
-bool AppTime::RTCBattery() {
+char *AppTime::RTCBattery() {
     Serial.print("RTC battery is alive: ");
     Serial.println(rtcBatteryIsLive ? "True" : "False");
 
-    return rtcBatteryIsLive;
+    return rtcBatteryIsLive ? "1" : "0";
 }
 
 bool AppTime::RTCIsDateTimeValid() {
@@ -68,13 +76,14 @@ bool AppTime::RTCIsDateTimeValid() {
     return isValid;
 }
 
-void AppTime::RTCGetCurrentTime(char *timeStr) {
+char *AppTime::RTCGetCurrentTime() {
     RtcDateTime rtcTime = Rtc.GetDateTime();
     AppTime::RTCIsDateTimeValid();
 
+    static char timeStr[20];
     snprintf_P(
             timeStr,
-            20,
+            sizeof timeStr,
             PSTR("%02u/%02u/%04u %02u:%02u:%02u"),
             rtcTime.Month(),
             rtcTime.Day(),
@@ -86,6 +95,8 @@ void AppTime::RTCGetCurrentTime(char *timeStr) {
 
     Serial.print("RTC time: ");
     Serial.println(timeStr);
+
+    return timeStr;
 }
 
 void AppTime::RTCDateTimeUpdate(const char *date, const char *time) {
