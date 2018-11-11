@@ -19,7 +19,7 @@ public:
 
     static char *RTCGetCurrentTime();
 
-    static void RTCDateTimeUpdate(const char *date, const char *time);
+    static void RTCDateTimeUpdate(const char *command, const char *param);
 };
 
 #endif /* AppTime_h */

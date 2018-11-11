@@ -48,6 +48,8 @@ void Relay::initiate() {
 bool Relay::parseSerialCommand(const char *command, const char *param) {
     if (strcmp(command, relayOnSerialCommand) == 0) return Relay::on(param);
     if (strcmp(command, relayOffSerialCommand) == 0) return Relay::off(param);
+
+    return false;
 }
 
 // private

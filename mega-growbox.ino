@@ -38,6 +38,8 @@ void loop() {
         if (performRelayCommand) {
             AppSerial::sendFrame(&serialFrame);
         }
+        // sync RTC time by NTP
+        AppTime::RTCDateTimeUpdate(serialFrame.command, serialFrame.param);
 //        // serial speed test
 //        if (strcmp(serialFrame.command, "test") == 0) {
 //            unsigned long testStart = millis();

@@ -40,9 +40,6 @@ char *Sensor::temperatureGet() {
     }
     dtostrf(currentTemperature, strLength, 0, temperatureStr);
 
-    Serial.print("DHT temperature: ");
-    Serial.println(temperatureStr);
-
     return temperatureStr;
 }
 
@@ -56,16 +53,11 @@ char *Sensor::humidityGet() {
     }
     dtostrf(currentHumidity, strLength, 0, humidityStr);
 
-    Serial.print("DHT humidity: ");
-    Serial.println(humidityStr);
-
     return humidityStr;
 }
 
 char *Sensor::humidityHasWater() {
     int hasWater = digitalRead(HUMIDITY_LEVEL_SENSOR);
-    Serial.print("Humidity has water: ");
-    Serial.println(hasWater ? "True" : "False");
     return hasWater ? "1" : "0";
 }
 
@@ -92,7 +84,5 @@ char *Sensor::getSoilMoisture(int sensorId) {
 
 char *Sensor::wateringHasWater() {
     int hasWater = digitalRead(WATERING_LEVEL_SENSOR);
-    Serial.print("Watering has water: ");
-    Serial.println(hasWater ? "True" : "False");
     return hasWater ? "1" : "0";
 }
