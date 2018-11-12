@@ -3,6 +3,7 @@
 
 #include "def.h"
 #include "Sensor.h"
+#include "Tools.h"
 
 static DHT dht(DHTPin, DHTTYPE);
 
@@ -33,27 +34,15 @@ void Sensor::readDHT() {
 // temperature
 
 char *Sensor::temperatureGet() {
-    static char temperatureStr[2];
-    int strLength = 1;
-    if (currentTemperature > 10) {
-        strLength = 2;
-    }
-    dtostrf(currentTemperature, strLength, 0, temperatureStr);
-
-    return temperatureStr;
+    char *result = Tools::intToChar(currentTemperature);
+    return result;
 }
 
 // humidity
 
 char *Sensor::humidityGet() {
-    static char humidityStr[2];
-    int strLength = 1;
-    if (currentHumidity > 10) {
-        strLength = 2;
-    }
-    dtostrf(currentHumidity, strLength, 0, humidityStr);
-
-    return humidityStr;
+    char *result = Tools::intToChar(currentHumidity);
+    return result;
 }
 
 char *Sensor::humidityHasWater() {
@@ -66,18 +55,8 @@ char *Sensor::humidityHasWater() {
 
 char *Sensor::getSoilMoisture(int sensorId) {
     unsigned int moisture = analogRead(sensorId);
-    static char moistureStr[4];
-    int strLength = 1;
-    if (moisture > 10) {
-        strLength = 2;
-    } else if (moisture > 99) {
-        strLength = 3;
-    } else if (moisture > 999) {
-        strLength = 4;
-    }
-    dtostrf(moisture, strLength, 0, moistureStr);
-
-    return moistureStr;
+    char *result = Tools::intToChar(moisture);
+    return result;
 }
 
 // watering

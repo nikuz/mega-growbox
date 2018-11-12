@@ -46,13 +46,9 @@ char *AppTime::RTCGetTemperature() {
     RtcTemperature rtcTemp = Rtc.GetTemperature();
     static char temperatureStr[2];
     float rtcTempFloat = rtcTemp.AsFloatDegC();
-    int strLength = 1;
-    if (rtcTempFloat > 10) {
-        strLength = 2;
-    }
-    dtostrf(rtcTempFloat, strLength, 0, temperatureStr);
 
-    return temperatureStr;
+    char *result = Tools::intToChar(rtcTempFloat);
+    return result;
 }
 
 char *AppTime::RTCBattery() {
@@ -103,8 +99,8 @@ void AppTime::RTCDateTimeUpdate(const char *command, const char *param) {
             if (i == 0) {
                 char *substring, *subfound;
                 substring = strdup(found);
-                uint8_t month;
-                char *day, *year;
+                uint8_t month, day;
+                char *year;
                 int dateI = 0;
                 while((subfound = strsep(&substring, "/")) != NULL) {
                     switch (dateI) {

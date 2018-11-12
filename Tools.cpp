@@ -27,3 +27,20 @@ uint8_t Tools::StringToUint8(const char *pString) {
     }
     return value;
 }
+
+char *Tools::intToChar(unsigned int value) {
+    static char result[5];
+    int strLength = 1;
+    if (value > 9) {
+        strLength = 2;
+    } else if (value > 99) {
+        strLength = 3;
+    } else if (value > 999) {
+        strLength = 4;
+    } else if (value > 9999) {
+        strLength = 5;
+    }
+    dtostrf(value, strLength, 0, result);
+
+    return result;
+}

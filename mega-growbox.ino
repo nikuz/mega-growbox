@@ -47,8 +47,7 @@ void loop() {
 //            AppSerial::sendFrame(&testFirstFrame);
 //            while (millis() - testStart < 1000) {
 //                unsigned long val = millis() - testStart;
-//                char testStr[5];
-//                dtostrf(val, sizeof testStr, 0, testStr);
+//                char *testStr = Tools::intToChar(val);
 //                SerialFrame testFrame = SerialFrame("test", testStr);
 //                AppSerial::sendFrame(&testFrame);
 //            }
@@ -97,8 +96,7 @@ void loop() {
         int soilSensorsCounts = *(&soilSensors + 1) - soilSensors;
         for (int i = 0; i < soilSensorsCounts; i++) {
             const char command[] = "s";
-            const char commandEnd[1];
-            dtostrf(i + 1, 1, 0, commandEnd);
+            const char *commandEnd = Tools::intToChar(i + 1);
             strcat(command, commandEnd);
             const char *soilHumidityParam = Sensor::getSoilMoisture(soilSensors[i]);
             SerialFrame soilHumidityFrame = SerialFrame(command, soilHumidityParam);

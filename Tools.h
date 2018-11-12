@@ -10,7 +10,10 @@ public:
     ~Tools();
 
     static bool timerCheck(int interval, unsigned long lastInitiate);
+
     static uint8_t StringToUint8(const char *pString);
+
+    static char *intToChar(unsigned int value);
 };
 
 #endif /* Tools_h */
