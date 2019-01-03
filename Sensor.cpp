@@ -18,6 +18,12 @@ void Sensor::initiate() {
     dht.begin();
     pinMode(HUMIDITY_LEVEL_SENSOR, INPUT);
     pinMode(WATERING_LEVEL_SENSOR, INPUT);
+    pinMode(DOOR_BUTTON, INPUT);
+    digitalWrite(DOOR_BUTTON, HIGH);
+    pinMode(RAIN_SENSOR_1, INPUT);
+    pinMode(RAIN_SENSOR_2, INPUT);
+    pinMode(RAIN_SENSOR_3, INPUT);
+    pinMode(RAIN_SENSOR_4, INPUT);
 }
 
 void Sensor::readDHT() {
@@ -50,7 +56,6 @@ char *Sensor::humidityHasWater() {
     return hasWater ? "1" : "0";
 }
 
-
 // soil
 
 char *Sensor::getSoilMoisture(int sensorId) {
@@ -64,4 +69,18 @@ char *Sensor::getSoilMoisture(int sensorId) {
 char *Sensor::wateringHasWater() {
     int hasWater = digitalRead(WATERING_LEVEL_SENSOR);
     return hasWater ? "1" : "0";
+}
+
+// door button
+
+char *Sensor::doorIsOpen() {
+    int doorIsOpen = digitalRead(DOOR_BUTTON);
+    return !doorIsOpen ? "1" : "0"; // inversed because button has only two pins and pulled up by default
+}
+
+// rain
+
+char *Sensor::getRainStatus(int sensorId) {
+    unsigned int rain = digitalRead(sensorId);
+    return !rain ? "1" : "0"; // reversed
 }

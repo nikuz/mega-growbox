@@ -5,17 +5,18 @@
 
 // RelayItem({pin}, {name}, {highLevelTrigger}) - highLevelTrigger is true by default
 static RelayItem relays[] = {
-        RelayItem(30, "light"), // 220V
-        RelayItem(31, "vent"), // 220V
-        RelayItem(32, "humidity"), // 220V
-        RelayItem(33, "water"), // 220V
-        RelayItem(34, "wind"), // 220V
-        RelayItem(35, "free"), // 220V
-        RelayItem(36, "s1", false), // 12V
-        RelayItem(37, "s2", false), // 12V
-        RelayItem(38, "s3", false), // 12V
-        RelayItem(39, "s4", false), // 12V
-        RelayItem(40, "sHumidity", false) // 12V
+        RelayItem(53, "light"), // 220V
+        RelayItem(52, "vent"), // 220V
+        RelayItem(51, "humidity"), // 220V
+        RelayItem(50, "water"), // 220V
+        RelayItem(49, "wind"), // 220V
+        RelayItem(48, "wmixing"), // 220V
+        RelayItem(25, "s1", false), // 12V
+        RelayItem(23, "s2", false), // 12V
+        RelayItem(32, "s3", false), // 12V
+        RelayItem(30, "s4", false), // 12V
+        RelayItem(28, "sHumidity", false), // 12V
+        RelayItem(26, "free12", false) // 12V
 };
 
 const char relayOnSerialCommand[] = "rOn";

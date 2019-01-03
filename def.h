@@ -1,5 +1,5 @@
-//#define PRODUCTION 1    // production
-#define PRODUCTION 0    // development
+#define PRODUCTION 1    // production
+//#define PRODUCTION 0    // development
 
 #define VERSION 1
 
@@ -15,13 +15,22 @@
 #else
 #define DHTTYPE DHT11
 #endif
-#define DHTPin  22
-#define HUMIDITY_LEVEL_SENSOR 23
+#define DHTPin  46
+#define HUMIDITY_LEVEL_SENSOR 22
 #define WATERING_LEVEL_SENSOR 24
 
-#define SOIL_SENSOR_1 0 // A0
-#define SOIL_SENSOR_2 1 // A1
-#define SOIL_SENSOR_3 2 // A2
-#define SOIL_SENSOR_4 3 // A3
+#define SOIL_SENSOR_1 1 // A0
+#define SOIL_SENSOR_2 2 // A1
+#define SOIL_SENSOR_3 3 // A2
+#define SOIL_SENSOR_4 4 // A3
 
 // relays defined in Relay.cpp
+
+#define DOOR_BUTTON 34
+
+#define LIGHT_KNOB_SERVO 12
+
+#define RAIN_SENSOR_1 33
+#define RAIN_SENSOR_2 31
+#define RAIN_SENSOR_3 29
+#define RAIN_SENSOR_4 27

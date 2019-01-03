@@ -1,7 +1,9 @@
 #include "Relay.h"
 #include "AppSerial.h"
+#include "AppI2C.h"
 #include "AppTime.h"
 #include "Sensor.h"
+#include "Light.h"
 #include "Tools.h"
 #include "def.h"
 
@@ -26,7 +28,11 @@ void setup() {
         ;
     }
 
+    AppI2C::initiate();
+    AppI2C::scan();
     Relay::initiate();
+    Sensor::initiate();
+    Light::initiate();
     AppTime::RTCBegin();
 }
 
@@ -38,6 +44,7 @@ void loop() {
         if (performRelayCommand) {
             AppSerial::sendFrame(&serialFrame);
         }
+        Light::parseSerialCommand(serialFrame.command, serialFrame.param);
         // sync RTC time by NTP
         AppTime::RTCDateTimeUpdate(serialFrame.command, serialFrame.param);
 //        // serial speed test
@@ -103,7 +110,28 @@ void loop() {
             AppSerial::sendFrame(&soilHumidityFrame);
         }
 
+        const char *lightIntensityParam = Light::intensity();
+        SerialFrame lightIntensityFrame = SerialFrame("light", lightIntensityParam);
+        AppSerial::sendFrame(&lightIntensityFrame);
+
+        const char *doorIsOpenParam = Sensor::doorIsOpen();
+        SerialFrame doorIsOpenParamFrame = SerialFrame("door", doorIsOpenParam);
+        AppSerial::sendFrame(&doorIsOpenParamFrame);
+
+        int rainSensors[] = {RAIN_SENSOR_1, RAIN_SENSOR_2, RAIN_SENSOR_3, RAIN_SENSOR_4};
+        int rainSensorsCounts = *(&rainSensors + 1) - rainSensors;
+        for (int i = 0; i < rainSensorsCounts; i++) {
+            const char command[] = "rain";
+            const char *commandEnd = Tools::intToChar(i + 1);
+            strcat(command, commandEnd);
+            const char *rainParam = Sensor::getRainStatus(soilSensors[i]);
+            SerialFrame rainFrame = SerialFrame(command, rainParam);
+            AppSerial::sendFrame(&rainFrame);
+        }
+
         SensorsReadLastTime = millis();
     }
     //
+
+    Light::checkKnobPosition();
 }

@@ -22,6 +22,10 @@ public:
     static char *getSoilMoisture(int sensorId);
 
     static char *wateringHasWater();
+
+    static char *doorIsOpen();
+
+    static char *getRainStatus(int sensorId);
 };
 
 #endif /* Sensor_h */
