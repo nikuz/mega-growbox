@@ -102,7 +102,7 @@ void loop() {
         int soilSensors[] = {SOIL_SENSOR_1, SOIL_SENSOR_2, SOIL_SENSOR_3, SOIL_SENSOR_4};
         int soilSensorsCounts = *(&soilSensors + 1) - soilSensors;
         for (int i = 0; i < soilSensorsCounts; i++) {
-            const char command[] = "s";
+            const char command[] = "soil";
             const char *commandEnd = Tools::intToChar(i + 1);
             strcat(command, commandEnd);
             const char *soilHumidityParam = Sensor::getSoilMoisture(soilSensors[i]);
@@ -124,7 +124,7 @@ void loop() {
             const char command[] = "rain";
             const char *commandEnd = Tools::intToChar(i + 1);
             strcat(command, commandEnd);
-            const char *rainParam = Sensor::getRainStatus(soilSensors[i]);
+            const char *rainParam = Sensor::getRainStatus(rainSensors[i]);
             SerialFrame rainFrame = SerialFrame(command, rainParam);
             AppSerial::sendFrame(&rainFrame);
         }

@@ -21,9 +21,13 @@ void Sensor::initiate() {
     pinMode(DOOR_BUTTON, INPUT);
     digitalWrite(DOOR_BUTTON, HIGH);
     pinMode(RAIN_SENSOR_1, INPUT);
+    digitalWrite(RAIN_SENSOR_1, HIGH);
     pinMode(RAIN_SENSOR_2, INPUT);
+    digitalWrite(RAIN_SENSOR_2, HIGH);
     pinMode(RAIN_SENSOR_3, INPUT);
+    digitalWrite(RAIN_SENSOR_3, HIGH);
     pinMode(RAIN_SENSOR_4, INPUT);
+    digitalWrite(RAIN_SENSOR_4, HIGH);
 }
 
 void Sensor::readDHT() {

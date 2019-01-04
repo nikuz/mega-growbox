@@ -104,8 +104,8 @@ void AppTime::RTCDateTimeUpdate(const char *command, const char *param) {
             if (i == 0) {
                 char *substring, *subfound;
                 substring = strdup(found);
-                uint8_t month, day;
-                char *year;
+                uint8_t month = 0, day = 0;
+                char *year = "";
                 int dateI = 0;
                 while((subfound = strsep(&substring, "/")) != NULL) {
                     switch (dateI) {
