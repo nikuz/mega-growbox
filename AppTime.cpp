@@ -95,46 +95,45 @@ char *AppTime::RTCGetCurrentTime() {
 void AppTime::RTCDateTimeUpdate(const char *command, const char *param) {
     // 10/10/2018 00:09:21
     if (strcmp(command, "time") == 0) {
-        char *string, *found, *time;
+        int month = -1;
+        int day = -1;
+        int year = -1;
         char date[15];
-        string = strdup(param);
-        int i = 0;
+        char *time;
 
-        while((found = strsep(&string, " ")) != NULL) {
-            if (i == 0) {
-                char *substring, *subfound;
-                substring = strdup(found);
-                uint8_t month = 0, day = 0;
-                char *year = "";
-                int dateI = 0;
-                while((subfound = strsep(&substring, "/")) != NULL) {
-                    switch (dateI) {
-                        case 0:
-                            month = Tools::StringToUint8(subfound);
-                            break;
-                        case 1:
-                            day = Tools::StringToUint8(subfound);
-                            break;
-                        case 2:
-                            year = subfound;
-                            break;
-                    }
-                    dateI++;
-                }
-                sprintf(
-                        date,
-                        "%.3s%3d %.4s",
-                        months[month - 1],
-                        day,
-                        year
-                );
-                free(substring);
-            } else {
-                time = found;
+        char dateString[20];
+        strncpy(dateString, param, 20);
+
+        char *pch;
+        const char *delimiter = " /";
+        pch = strtok(dateString, delimiter);
+        int i = 0;
+        while (pch != NULL) {
+            switch (i) {
+                case 0:
+                    month = atoi(pch);
+                    break;
+                case 1:
+                    day = atoi(pch);
+                    break;
+                case 2:
+                    year = atoi(pch);
+                    break;
+                case 3:
+                    time = pch;
+                    break;
             }
+            pch = strtok(NULL, delimiter);
             i++;
         }
-        free(string);
+
+        sprintf(
+                date,
+                "%.3s%3d %4d",
+                months[month - 1],
+                day,
+                year
+        );
 
         RtcDateTime ntpDateTime = RtcDateTime(date, time);
         AppI2C::select(0);

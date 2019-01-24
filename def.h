@@ -1,12 +1,23 @@
 #define PRODUCTION 1    // production
 //#define PRODUCTION 0    // development
+//#define DEBUG 1
 
-#define VERSION 1
+#define VERSION_ID "1"
 
 #if PRODUCTION
 #define VERSION_MARKER "P"
 #else
 #define VERSION_MARKER "D"
+#endif
+
+#define VERSION VERSION_MARKER VERSION_ID
+
+#ifdef DEBUG
+#define DEBUG_PRINT(x)  Serial.print(x)
+#define DEBUG_PRINTLN(x)  Serial.println(x)
+#else
+#define DEBUG_PRINT(x)
+#define DEBUG_PRINTLN(x)
 #endif
 
 // sensors
@@ -19,10 +30,10 @@
 #define HUMIDITY_LEVEL_SENSOR 22
 #define WATERING_LEVEL_SENSOR 24
 
-#define SOIL_SENSOR_1 1 // A0
-#define SOIL_SENSOR_2 2 // A1
-#define SOIL_SENSOR_3 3 // A2
-#define SOIL_SENSOR_4 4 // A3
+#define SOIL_SENSOR_1 4 // A4
+#define SOIL_SENSOR_2 3 // A3
+#define SOIL_SENSOR_3 2 // A2
+#define SOIL_SENSOR_4 1 // A1
 
 // relays defined in Relay.cpp
 

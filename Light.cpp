@@ -34,7 +34,7 @@ char *Light::intensity() {
 }
 
 void Light::parseSerialCommand(const char *command, const char *param) {
-    int value = map(Tools::StringToUint8(param), 0, 100, 0, 180); // from percents to degree
+    int value = map(atoi(param), 0, 100, 0, 180); // from percents to degree
     if (strcmp(command, "knob") == 0) {
         if (lightKnob.read() != value) {
             lightKnob.attach(LIGHT_KNOB_SERVO);

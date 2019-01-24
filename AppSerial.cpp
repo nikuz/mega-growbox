@@ -1,5 +1,6 @@
 #include <Arduino.h>
 
+#include "def.h"
 #include "AppSerial.h"
 
 static char command[10];
@@ -23,7 +24,7 @@ SerialFrame AppSerial::getFrame() {
         memset(param, 0, sizeof(param));
     }
 
-    while (Serial1.available() > 0 && gotCommand == false) {
+    while (Serial1.available() > 0 && !gotCommand) {
         delay(1);
         chunk = Serial1.read();
         if (chunk != frameDelimiter && chunk != frameEndMarker) {
@@ -47,9 +48,9 @@ SerialFrame AppSerial::getFrame() {
     }
 
     if (gotCommand) {
-        Serial.print(command);
-        Serial.print(frameDelimiter);
-        Serial.println(param);
+        DEBUG_PRINT(command);
+        DEBUG_PRINT(frameDelimiter);
+        DEBUG_PRINTLN(param);
 
         return SerialFrame(command, param);
     }
@@ -58,10 +59,9 @@ SerialFrame AppSerial::getFrame() {
 }
 
 void AppSerial::sendFrame(SerialFrame *serialFrame) {
-    Serial.write(serialFrame->command);
-    Serial.write(serialFrame->delimiter);
-    Serial.write(serialFrame->param);
-    Serial.write(serialFrame->endMarker);
+    DEBUG_PRINT(serialFrame->command);
+    DEBUG_PRINT(serialFrame->delimiter);
+    DEBUG_PRINTLN(serialFrame->param);
 
     delay(1);
 

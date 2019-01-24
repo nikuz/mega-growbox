@@ -19,9 +19,7 @@ void setup() {
         ;
     }
     Serial.print("Version: ");
-    Serial.print(VERSION_MARKER);
-    Serial.println(VERSION);
-    Serial.println("");
+    Serial.print(VERSION);
 
     Serial1.begin(115200);
     while (!Serial1) {
@@ -29,7 +27,9 @@ void setup() {
     }
 
     AppI2C::initiate();
+#ifdef DEBUG
     AppI2C::scan();
+#endif
     Relay::initiate();
     Sensor::initiate();
     Light::initiate();

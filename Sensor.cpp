@@ -17,7 +17,9 @@ Sensor::~Sensor() {}
 void Sensor::initiate() {
     dht.begin();
     pinMode(HUMIDITY_LEVEL_SENSOR, INPUT);
+    digitalWrite(HUMIDITY_LEVEL_SENSOR, HIGH);
     pinMode(WATERING_LEVEL_SENSOR, INPUT);
+    digitalWrite(WATERING_LEVEL_SENSOR, HIGH);
     pinMode(DOOR_BUTTON, INPUT);
     digitalWrite(DOOR_BUTTON, HIGH);
     pinMode(RAIN_SENSOR_1, INPUT);
@@ -34,7 +36,7 @@ void Sensor::readDHT() {
     float newTemperature = dht.readTemperature();
     float newHumidity = dht.readHumidity();
     if (isnan(newTemperature) || isnan(newHumidity)) {
-        Serial.println("Failed to read from DHT sensor!");
+        DEBUG_PRINTLN("Failed to read from DHT sensor!");
     } else {
         currentTemperature = newTemperature;
         currentHumidity = newHumidity;
@@ -57,7 +59,7 @@ char *Sensor::humidityGet() {
 
 char *Sensor::humidityHasWater() {
     int hasWater = digitalRead(HUMIDITY_LEVEL_SENSOR);
-    return hasWater ? "1" : "0";
+    return !hasWater ? "1" : "0"; // inverted
 }
 
 // soil
@@ -72,19 +74,19 @@ char *Sensor::getSoilMoisture(int sensorId) {
 
 char *Sensor::wateringHasWater() {
     int hasWater = digitalRead(WATERING_LEVEL_SENSOR);
-    return hasWater ? "1" : "0";
+    return !hasWater ? "1" : "0"; // inverted
 }
 
 // door button
 
 char *Sensor::doorIsOpen() {
     int doorIsOpen = digitalRead(DOOR_BUTTON);
-    return !doorIsOpen ? "1" : "0"; // inversed because button has only two pins and pulled up by default
+    return !doorIsOpen ? "1" : "0"; // inverted because button has only two pins and pulled up by default
 }
 
 // rain
 
 char *Sensor::getRainStatus(int sensorId) {
     unsigned int rain = digitalRead(sensorId);
-    return !rain ? "1" : "0"; // reversed
+    return !rain ? "1" : "0"; // inverted
 }

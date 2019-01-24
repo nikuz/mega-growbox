@@ -9,14 +9,14 @@ static RelayItem relays[] = {
         RelayItem(52, "vent"), // 220V
         RelayItem(51, "humidity"), // 220V
         RelayItem(50, "water"), // 220V
-        RelayItem(49, "wind"), // 220V
-        RelayItem(48, "wmixing"), // 220V
+        RelayItem(49, "wmixing"), // 220V
+        RelayItem(48, "free220"), // 220V
         RelayItem(25, "s1", false), // 12V
         RelayItem(23, "s2", false), // 12V
         RelayItem(32, "s3", false), // 12V
         RelayItem(30, "s4", false), // 12V
         RelayItem(28, "sHumidity", false), // 12V
-        RelayItem(26, "free12", false) // 12V
+        RelayItem(26, "wind", false) // 12V
 };
 
 const char relayOnSerialCommand[] = "rOn";
@@ -58,8 +58,8 @@ bool Relay::parseSerialCommand(const char *command, const char *param) {
 bool Relay::on(const char *name) {
     RelayItem relayItem = Relay::getRelayPin(name);
     if (relayItem.pin != -1) {
-        Serial.print("Relay ON: ");
-        Serial.println(relayItem.name);
+        DEBUG_PRINT("Relay ON: ");
+        DEBUG_PRINTLN(relayItem.name);
         if (relayItem.highLevelTrigger) {
             digitalWrite(relayItem.pin, HIGH);
         } else {
@@ -68,16 +68,16 @@ bool Relay::on(const char *name) {
         return true;
     }
 
-    Serial.print("Relay doesn't exist: ");
-    Serial.println(name);
+    DEBUG_PRINT("Relay doesn't exist: ");
+    DEBUG_PRINTLN(name);
     return false;
 }
 
 bool Relay::off(const char *name) {
     RelayItem relayItem = Relay::getRelayPin(name);
     if (relayItem.pin != -1) {
-        Serial.print("Relay OFF: ");
-        Serial.println(relayItem.name);
+        DEBUG_PRINT("Relay OFF: ");
+        DEBUG_PRINTLN(relayItem.name);
         if (relayItem.highLevelTrigger) {
             digitalWrite(relayItem.pin, LOW);
         } else {
@@ -87,8 +87,8 @@ bool Relay::off(const char *name) {
         return true;
     }
 
-    Serial.print("Relay doesn't exist: ");
-    Serial.println(name);
+    DEBUG_PRINT("Relay doesn't exist: ");
+    DEBUG_PRINTLN(name);
     return false;
 }
 
